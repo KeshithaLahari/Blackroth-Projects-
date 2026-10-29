@@ -1,245 +1,388 @@
-"""Ten practical Python OOP coding challenges matching exact Story 6 names."""
 
-from __future__ import annotations
+"""Ten practical Python OOP coding challenges."""
 
+
+# Challenge 1: Student Class
 import math
 
 
-# 1. Student class
 class Student:
-    def __init__(self, full_name: str, test_scores: list[float]) -> None:
-        self.full_name = full_name
-        self.test_scores = test_scores
+    """Store student details and calculate the average marks."""
+
+    def __init__(self, name: str, marks: list[float]) -> None:
+        self.name = name
+        self.marks = marks
 
     def calculate_average(self) -> float:
-        return sum(self.test_scores) / len(self.test_scores) if self.test_scores else 0.0
+        """Return the average of the student's marks."""
+        if not self.marks:
+            return 0.0
+        return sum(self.marks) / len(self.marks)
 
     def display_details(self) -> None:
-        print(f"Student: {self.full_name} | Average: {self.calculate_average():.2f}")
+        """Display student details and average marks."""
+        print(f"Student Name: {self.name}")
+        print(f"Marks: {self.marks}")
+        print(f"Average Marks: {self.calculate_average():.2f}")
 
 
-# 2. Bank account class
+def main() -> None:
+    print("=== Challenge 1: Student Class ===")
+
+    student = Student("Rahul", [85, 90, 78])
+    student.display_details()
+
+
+if __name__ == "__main__":
+    main()
+
+
+# Challenge 2: Bank Account
 class BankAccount:
-    def __init__(self, holder_name: str, opening_balance: float = 0.0) -> None:
-        self.holder_name = holder_name
-        self.balance = opening_balance
+    """Manage a bank account with deposit and withdrawal operations."""
 
-    def deposit(self, funds: float) -> None:
-        if funds > 0:
-            self.balance += funds
-            print(f"Deposited: Rs. {funds:.2f}")
+    def __init__(self, account_holder: str, balance: float = 0.0) -> None:
+        self.account_holder = account_holder
+        self.balance = balance
 
-    def withdraw(self, funds: float) -> None:
-        if 0 < funds <= self.balance:
-            self.balance -= funds
-            print(f"Withdrawn: Rs. {funds:.2f}")
+    def deposit(self, amount: float) -> None:
+        """Add money to the account."""
+        if amount <= 0:
+            print("Deposit amount must be positive.")
+            return
+
+        self.balance += amount
+        print(f"Deposited: Rs. {amount:.2f}")
+
+    def withdraw(self, amount: float) -> None:
+        """Withdraw money if sufficient balance is available."""
+        if amount <= 0:
+            print("Withdrawal amount must be positive.")
+        elif amount > self.balance:
+            print("Insufficient balance.")
         else:
-            print("Declined: Insufficient funds or invalid amount.")
+            self.balance -= amount
+            print(f"Withdrawn: Rs. {amount:.2f}")
 
     def display_balance(self) -> None:
-        print(f"Account: {self.holder_name} | Balance: Rs. {self.balance:.2f}")
+        """Display the current account balance."""
+        print(f"Account Holder: {self.account_holder}")
+        print(f"Current Balance: Rs. {self.balance:.2f}")
 
 
-# 3. Employee management
+# Challenge 3: Employee Management
 class Employee:
-    def __init__(self, emp_name: str, staff_code: int, monthly_pay: float) -> None:
-        self.emp_name = emp_name
-        self.staff_code = staff_code
-        self.monthly_pay = monthly_pay
+    """Store employee details and calculate annual salary."""
+
+    def __init__(
+        self, name: str, employee_id: int, monthly_salary: float
+    ) -> None:
+        self.name = name
+        self.employee_id = employee_id
+        self.monthly_salary = monthly_salary
 
     def calculate_annual_salary(self) -> float:
-        return self.monthly_pay * 12
+        """Calculate the employee's annual salary."""
+        return self.monthly_salary * 12
 
     def display_details(self) -> None:
-        print(f"Employee #{self.staff_code}: {self.emp_name} | Annual: Rs. {self.calculate_annual_salary():.2f}")
+        """Display employee information."""
+        print(f"Employee Name: {self.name}")
+        print(f"Employee ID: {self.employee_id}")
+        print(f"Monthly Salary: Rs. {self.monthly_salary:.2f}")
+        print(
+            f"Annual Salary: Rs. "
+            f"{self.calculate_annual_salary():.2f}"
+        )
 
 
-# 4. Vehicle inheritance
+# Challenge 4: Vehicle Inheritance
 class Vehicle:
-    def __init__(self, brand_name: str, model_line: str) -> None:
-        self.brand_name = brand_name
-        self.model_line = model_line
+    """Represent a general vehicle."""
+
+    def __init__(self, brand: str, model: str) -> None:
+        self.brand = brand
+        self.model = model
 
     def display_details(self) -> None:
-        print(f"Make: {self.brand_name} {self.model_line}")
+        """Display vehicle information."""
+        print(f"Brand: {self.brand}")
+        print(f"Model: {self.model}")
 
 
 class Car(Vehicle):
-    def __init__(self, brand_name: str, model_line: str, door_count: int) -> None:
-        super().__init__(brand_name, model_line)
-        self.door_count = door_count
+    """Represent a car inherited from Vehicle."""
+
+    def __init__(
+        self, brand: str, model: str, doors: int
+    ) -> None:
+        super().__init__(brand, model)
+        self.doors = doors
 
     def display_details(self) -> None:
+        """Display car information."""
         super().display_details()
-        print(f"Doors: {self.door_count}")
+        print(f"Number of Doors: {self.doors}")
 
 
 class Motorcycle(Vehicle):
-    def __init__(self, brand_name: str, model_line: str, displacement_cc: int) -> None:
-        super().__init__(brand_name, model_line)
-        self.displacement_cc = displacement_cc
+    """Represent a motorcycle inherited from Vehicle."""
+
+    def __init__(self, brand: str, model: str, engine_cc: int) -> None:
+        super().__init__(brand, model)
+        self.engine_cc = engine_cc
 
     def display_details(self) -> None:
+        """Display motorcycle information."""
         super().display_details()
-        print(f"Engine: {self.displacement_cc} cc")
+        print(f"Engine Capacity: {self.engine_cc} cc")
 
 
-# 5. Shape area calculator
+# Challenge 5: Shape Area Calculator
+
+
 class Shape:
+    """Base class for shapes."""
+
     def area(self) -> float:
-        raise NotImplementedError("Subclasses must calculate area.")
+        """Return the shape's area."""
+        raise NotImplementedError("Subclasses must implement area().")
 
 
 class Circle(Shape):
+    """Calculate the area of a circle."""
+
     def __init__(self, radius: float) -> None:
         self.radius = radius
 
     def area(self) -> float:
-        return math.pi * (self.radius**2)
+        return math.pi * self.radius ** 2
 
 
 class Rectangle(Shape):
-    def __init__(self, span_x: float, span_y: float) -> None:
-        self.span_x = span_x
-        self.span_y = span_y
+    """Calculate the area of a rectangle."""
+
+    def __init__(self, length: float, width: float) -> None:
+        self.length = length
+        self.width = width
 
     def area(self) -> float:
-        return self.span_x * self.span_y
+        return self.length * self.width
 
 
-# 6. Shopping cart
+# Challenge 6: Shopping Cart
 class ShoppingCart:
-    def __init__(self) -> None:
-        self.cart_items: list[tuple[str, float]] = []
+    """Manage items and their prices in a shopping cart."""
 
-    def add_item(self, product_label: str, unit_price: float) -> None:
-        if unit_price >= 0:
-            self.cart_items.append((product_label, unit_price))
-            print(f"Cart added: {product_label} (Rs. {unit_price:.2f})")
+    def __init__(self) -> None:
+        self.items: list[tuple[str, float]] = []
+
+    def add_item(self, name: str, price: float) -> None:
+        """Add an item to the cart."""
+        if price < 0:
+            print("Price cannot be negative.")
+            return
+
+        self.items.append((name, price))
+        print(f"Added: {name} - Rs. {price:.2f}")
 
     def calculate_total(self) -> float:
-        return sum(cost for _, cost in self.cart_items)
+        """Calculate the total price of all items."""
+        return sum(price for _, price in self.items)
 
     def display_cart(self) -> None:
-        for label, cost in self.cart_items:
-            print(f"- {label}: Rs. {cost:.2f}")
+        """Display all items and the total price."""
+        print("\nCart Items:")
+        for name, price in self.items:
+            print(f"{name}: Rs. {price:.2f}")
+
         print(f"Total: Rs. {self.calculate_total():.2f}")
 
 
-# 7. Movie rating system
+# Challenge 7: Movie Rating
 class Movie:
-    def __init__(self, film_title: str) -> None:
-        self.film_title = film_title
-        self.score_registry: list[float] = []
+    """Store movie details and manage ratings."""
 
-    def add_rating(self, user_score: float) -> None:
-        if 1.0 <= user_score <= 10.0:
-            self.score_registry.append(user_score)
-        else:
-            print("Score out of range (1–10).")
+    def __init__(self, title: str) -> None:
+        self.title = title
+        self.ratings: list[float] = []
+
+    def add_rating(self, rating: float) -> None:
+        """Add a rating between 1 and 10."""
+        if not 1 <= rating <= 10:
+            print("Rating must be between 1 and 10.")
+            return
+
+        self.ratings.append(rating)
+        print(f"Rating {rating:.1f} added for {self.title}.")
 
     def average_rating(self) -> float:
-        return sum(self.score_registry) / len(self.score_registry) if self.score_registry else 0.0
+        """Calculate the average movie rating."""
+        if not self.ratings:
+            return 0.0
+        return sum(self.ratings) / len(self.ratings)
 
     def display_details(self) -> None:
-        print(f"Movie: {self.film_title} | Score: {self.average_rating():.2f}/10 ({len(self.score_registry)} reviews)")
+        """Display the movie and its average rating."""
+        print(f"Movie: {self.title}")
+        print(f"Number of Ratings: {len(self.ratings)}")
+        print(f"Average Rating: {self.average_rating():.2f}/10")
 
 
-# 8. Hospital patient records
+# Challenge 8: Hospital Patient Records
 class Patient:
-    def __init__(self, chart_number: int, patient_name: str, medical_condition: str, ward_no: int) -> None:
-        self.chart_number = chart_number
-        self.patient_name = patient_name
-        self.medical_condition = medical_condition
-        self.ward_no = ward_no
+    """Store and display hospital patient records."""
+
+    def __init__(
+        self,
+        patient_id: int,
+        name: str,
+        diagnosis: str,
+        room_number: int,
+    ) -> None:
+        self.patient_id = patient_id
+        self.name = name
+        self.diagnosis = diagnosis
+        self.room_number = room_number
 
     def display_record(self) -> None:
-        print(f"Chart #{self.chart_number} | {self.patient_name} | Condition: {self.medical_condition} | Ward: {self.ward_no}")
+        """Display the patient's record."""
+        print(f"Patient ID: {self.patient_id}")
+        print(f"Patient Name: {self.name}")
+        print(f"Diagnosis: {self.diagnosis}")
+        print(f"Room Number: {self.room_number}")
 
 
-# 9. School result processing
+# Challenge 9: School Result Processing
 class SchoolResult:
-    def __init__(self, scholar_name: str, subject_marks: list[float]) -> None:
-        self.scholar_name = scholar_name
-        self.subject_marks = subject_marks
+    """Calculate and display a student's school result."""
+
+    def __init__(self, student_name: str, marks: list[float]) -> None:
+        self.student_name = student_name
+        self.marks = marks
 
     def calculate_total(self) -> float:
-        return sum(self.subject_marks)
+        """Calculate total marks."""
+        return sum(self.marks)
 
     def calculate_percentage(self) -> float:
-        return self.calculate_total() / len(self.subject_marks) if self.subject_marks else 0.0
+        """Calculate percentage assuming each subject is out of 100."""
+        if not self.marks:
+            return 0.0
+        return self.calculate_total() / len(self.marks)
 
     def get_result(self) -> str:
-        return "Pass" if self.subject_marks and all(m >= 35.0 for m in self.subject_marks) else "Fail"
+        """Return Pass if every subject has at least 35 marks."""
+        if not self.marks:
+            return "No marks available"
+        if all(mark >= 35 for mark in self.marks):
+            return "Pass"
+        return "Fail"
 
     def display_result(self) -> None:
-        print(f"Scholar: {self.scholar_name} | Total: {self.calculate_total():.0f} | Grade: {self.calculate_percentage():.2f}% ({self.get_result()})")
+        """Display the student's result."""
+        print(f"Student Name: {self.student_name}")
+        print(f"Total Marks: {self.calculate_total():.0f}")
+        print(f"Percentage: {self.calculate_percentage():.2f}%")
+        print(f"Result: {self.get_result()}")
 
 
-# 10. Online course management
+# Challenge 10: Online Course Management
 class OnlineCourse:
-    def __init__(self, course_title: str, instructor_name: str) -> None:
-        self.course_title = course_title
-        self.instructor_name = instructor_name
-        self.roster: list[str] = []
+    """Manage an online course and its enrolled students."""
 
-    def enroll_student(self, candidate_name: str) -> None:
-        if candidate_name not in self.roster:
-            self.roster.append(candidate_name)
-            print(f"Enrolled {candidate_name} into {self.course_title}")
-        else:
-            print(f"{candidate_name} already registered.")
+    def __init__(self, course_name: str, instructor: str) -> None:
+        self.course_name = course_name
+        self.instructor = instructor
+        self.students: list[str] = []
+
+    def enroll_student(self, student_name: str) -> None:
+        """Enroll a student if they are not already enrolled."""
+        if student_name in self.students:
+            print(f"{student_name} is already enrolled.")
+            return
+
+        self.students.append(student_name)
+        print(f"{student_name} enrolled successfully.")
 
     def display_course(self) -> None:
-        print(f"Course: {self.course_title} (Lead: {self.instructor_name}) | Class size: {len(self.roster)}")
+        """Display course details and enrolled students."""
+        print(f"Course: {self.course_name}")
+        print(f"Instructor: {self.instructor}")
+        print(f"Total Enrolled Students: {len(self.students)}")
+        print(f"Students: {', '.join(self.students)}")
 
 
-# Demonstration
 def main() -> None:
-    print("=== Challenge 1 ===")
-    Student("Pooja", [88.0, 91.0, 76.5]).display_details()
+    print("=== Challenge 1: Student Class ===")
+    student = Student("Rahul", [85, 90, 78])
+    student.display_details()
 
-    print("\n=== Challenge 2 ===")
-    acc = BankAccount("Pooja", 1200.0)
-    acc.deposit(300.0)
-    acc.withdraw(150.0)
-    acc.display_balance()
+    print("\n=== Challenge 2: Bank Account ===")
+    account = BankAccount("Rahul", 1000.00)
+    account.deposit(500.00)
+    account.withdraw(200.00)
+    account.display_balance()
 
-    print("\n=== Challenge 3 ===")
-    Employee("Kavita", 204, 32000.0).display_details()
+    print("\n=== Challenge 3: Employee Management ===")
+    employee = Employee("Priya", 101, 25000.00)
+    employee.display_details()
 
-    print("\n=== Challenge 4 ===")
-    Car("Honda", "City", 4).display_details()
-    Motorcycle("KTM", "Duke 390", 373).display_details()
+    print("\n=== Challenge 4: Vehicle Inheritance ===")
 
-    print("\n=== Challenge 5 ===")
-    print(f"Circle Area: {Circle(7.0).area():.2f}")
-    print(f"Rectangle Area: {Rectangle(6.0, 8.0).area():.2f}")
+    car = Car("Toyota", "Innova", 4)
+    car.display_details()
 
-    print("\n=== Challenge 6 ===")
+    print("\nMotorcycle Details:")
+    bike = Motorcycle("Yamaha", "R15", 155)
+    bike.display_details()
+
+    print("\n=== Challenge 5: Shape Area Calculator ===")
+
+    circle = Circle(5)
+    rectangle = Rectangle(4, 6)
+
+    print(f"Circle Area: {circle.area():.2f}")
+    print(f"Rectangle Area: {rectangle.area():.2f}")
+
+    print("\n=== Challenge 6: Shopping Cart ===")
+
     cart = ShoppingCart()
-    cart.add_item("Wireless Mouse", 850.0)
-    cart.add_item("USB-C Hub", 1450.0)
+    cart.add_item("Keyboard", 1200.00)
+    cart.add_item("Mouse", 500.00)
+    cart.add_item("Headphones", 800.00)
     cart.display_cart()
 
-    print("\n=== Challenge 7 ===")
-    film = Movie("Interstellar")
-    film.add_rating(9.5)
-    film.add_rating(9.0)
-    film.display_details()
+    print("\n=== Challenge 7: Movie Rating ===")
 
-    print("\n=== Challenge 8 ===")
-    Patient(4021, "Dev", "Asthma", 108).display_record()
+    movie = Movie("RRR")
+    movie.add_rating(9.0)
+    movie.add_rating(8.5)
+    movie.add_rating(9.5)
+    movie.display_details()
 
-    print("\n=== Challenge 9 ===")
-    SchoolResult("Pooja", [78.0, 82.0, 90.0]).display_result()
-    SchoolResult("Kiran", [65.0, 25.0, 80.0]).display_result()
+    print("\n=== Challenge 8: Hospital Patient Records ===")
 
-    print("\n=== Challenge 10 ===")
-    portal = OnlineCourse("System Design", "Prof. Verma")
-    portal.enroll_student("Pooja")
-    portal.enroll_student("Kavita")
-    portal.display_course()
+    patient = Patient(1001, "Ravi", "Fever", 205)
+    patient.display_record()
+
+    print("\n=== Challenge 9: School Result Processing ===")
+
+    result = SchoolResult("Rahul", [85, 90, 78])
+    result.display_result()
+
+    print("\n=== Challenge 9: School Result Processing ===")
+
+    result = SchoolResult("Anjali", [85, 78, 92, 88, 90])
+    result.display_result()
+
+    print("\n=== Challenge 10: Online Course Management ===")
+
+    course = OnlineCourse("Python OOP", "Mr. Kumar")
+    course.enroll_student("Rahul")
+    course.enroll_student("Priya")
+    course.enroll_student("Anjali")
+    course.display_course()
 
 
 if __name__ == "__main__":
