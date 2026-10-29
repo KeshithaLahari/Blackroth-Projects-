@@ -1,410 +1,394 @@
-"""Ten practical Python OOP coding challenges with fresh, real-world examples."""
+"""Ten practical Python OOP coding challenges ."""
+
+from __future__ import annotations
 
 import math
 
 
-# ============================================================
-# Challenge 1: Cricket Player Batting Tracker
-# Concept: Class with attributes and average calculation
-# ============================================================
+# ============================================================================
+# Challenge 1: Trainee Assessment (Average Calculator)
+# Concept: Class, attributes, list processing, average computation
+# ============================================================================
+class Trainee:
+    """Track trainee performance and compute evaluation scores."""
 
-class CricketPlayer:
-    """Store player stats and calculate their batting average."""
+    def __init__(self, full_name: str, module_scores: list[float]) -> None:
+        self.full_name: str = full_name
+        self.module_scores: list[float] = module_scores
 
-    def __init__(self, name: str, scores: list[float]) -> None:
-        self.name = name
-        self.scores = scores
-
-    def calculate_average(self) -> float:
-        """Return the average runs scored by the player."""
-        if not self.scores:
+    def compute_average(self) -> float:
+        """Return the mean of all module scores."""
+        if not self.module_scores:
             return 0.0
-        return sum(self.scores) / len(self.scores)
+        return sum(self.module_scores) / len(self.module_scores)
 
-    def display_details(self) -> None:
-        """Display player name, scores, and average."""
-        print(f"Player Name: {self.name}")
-        print(f"Recent Scores: {self.scores}")
-        print(f"Batting Average: {self.calculate_average():.2f}")
+    def print_summary(self) -> None:
+        """Display trainee overview and computed average score."""
+        print(f"Trainee Name: {self.full_name}")
+        print(f"Module Scores: {self.module_scores}")
+        print(f"Overall Average: {self.compute_average():.2f}")
 
 
-# ============================================================
-# Challenge 2: Mobile Recharge Wallet
-# Concept: Protected/monitored balance with deposit and deduction checks
-# ============================================================
+# ============================================================================
+# Challenge 2: Digital Wallet (Stateful Transaction Engine)
+# Concept: Encapsulation, positive constraints, deposit/withdraw guards
+# ============================================================================
+class DigitalWallet:
+    """Manage a digital prepaid wallet with load and payment actions."""
 
-class MobileWallet:
-    """Manage a digital cash wallet with add-money and spend operations."""
+    def __init__(self, owner_tag: str, credits: float = 0.0) -> None:
+        self.owner_tag: str = owner_tag
+        self.credits: float = credits
 
-    def __init__(self, user_name: str, balance: float = 0.0) -> None:
-        self.user_name = user_name
-        self.balance = balance
-
-    def add_funds(self, amount: float) -> None:
-        """Add money to the wallet balance."""
+    def top_up(self, amount: float) -> None:
+        """Add credits to the wallet."""
         if amount <= 0:
-            print("Recharge amount must be positive.")
+            print("Top-up amount must be positive.")
             return
 
-        self.balance += amount
-        print(f"Recharged: Rs. {amount:.2f}")
+        self.credits += amount
+        print(f"Credits Added: Rs. {amount:.2f}")
 
     def spend(self, amount: float) -> None:
-        """Deduct money if sufficient balance is available."""
+        """Deduct credits if balance is sufficient."""
         if amount <= 0:
-            print("Payment amount must be positive.")
-        elif amount > self.balance:
-            print("Insufficient wallet balance.")
+            print("Spend amount must be positive.")
+        elif amount > self.credits:
+            print("Payment declined: Insufficient funds.")
         else:
-            self.balance -= amount
+            self.credits -= amount
             print(f"Paid: Rs. {amount:.2f}")
 
-    def display_balance(self) -> None:
-        """Display the current wallet balance."""
-        print(f"Wallet User: {self.user_name}")
-        print(f"Available Balance: Rs. {self.balance:.2f}")
+    def show_balance(self) -> None:
+        """Display the current available credits."""
+        print(f"Wallet Owner: {self.owner_tag}")
+        print(f"Remaining Credits: Rs. {self.credits:.2f}")
 
 
-# ============================================================
-# Challenge 3: Freelance Consultant
-# Concept: Store profile details and calculate total yearly fee
-# ============================================================
-
+# ============================================================================
+# Challenge 3: Consultant Retainer (Annual Earnings Calculation)
+# Concept: Attributes, annualization calculation, formatted details
+# ============================================================================
 class Consultant:
-    """Store consultant details and calculate annual retained income."""
+    """Track consultant details and project annual billable earnings."""
 
-    def __init__(
-        self, name: str, consultant_id: int, monthly_retainer: float
-    ) -> None:
-        self.name = name
-        self.consultant_id = consultant_id
-        self.monthly_retainer = monthly_retainer
+    def __init__(self, full_name: str, contract_code: int, monthly_retainer: float) -> None:
+        self.full_name: str = full_name
+        self.contract_code: int = contract_code
+        self.monthly_retainer: float = monthly_retainer
 
-    def calculate_annual_income(self) -> float:
-        """Calculate total annual consulting fees."""
+    def total_annual_earnings(self) -> float:
+        """Calculate total retainer income for 12 months."""
         return self.monthly_retainer * 12
 
-    def display_details(self) -> None:
-        """Display consultant details and earnings."""
-        print(f"Consultant Name: {self.name}")
-        print(f"ID Number: {self.consultant_id}")
+    def display_contract(self) -> None:
+        """Display consultant contract summary."""
+        print(f"Consultant: {self.full_name}")
+        print(f"Contract Code: {self.contract_code}")
         print(f"Monthly Retainer: Rs. {self.monthly_retainer:.2f}")
-        print(f"Annual Income: Rs. {self.calculate_annual_income():.2f}")
+        print(f"Annual Earnings: Rs. {self.total_annual_earnings():.2f}")
 
 
-# ============================================================
-# Challenge 4: Electronic Gadget Hierarchy
-# Concept: Base class inheritance with specialized child classes and super()
-# ============================================================
+# ============================================================================
+# Challenge 4: Watercraft Inheritance Hierarchy
+# Concept: Inheritance, super() constructor calls, specialization
+# ============================================================================
+class Watercraft:
+    """Base class for water vessels."""
 
-class ElectronicDevice:
-    """Represent a general electronic device."""
+    def __init__(self, manufacturer: str, vessel_code: str) -> None:
+        self.manufacturer: str = manufacturer
+        self.vessel_code: str = vessel_code
 
-    def __init__(self, brand: str, model_name: str) -> None:
-        self.brand = brand
-        self.model_name = model_name
-
-    def display_details(self) -> None:
-        """Display general device specs."""
-        print(f"Brand: {self.brand}")
-        print(f"Model: {self.model_name}")
-
-
-class Laptop(ElectronicDevice):
-    """Represent a laptop inherited from ElectronicDevice."""
-
-    def __init__(
-        self, brand: str, model_name: str, ram_gb: int
-    ) -> None:
-        super().__init__(brand, model_name)
-        self.ram_gb = ram_gb
-
-    def display_details(self) -> None:
-        """Display laptop specifications."""
-        super().display_details()
-        print(f"RAM Capacity: {self.ram_gb} GB")
+    def print_specs(self) -> None:
+        """Display base vessel specifications."""
+        print(f"Shipyard: {self.manufacturer}")
+        print(f"Vessel Code: {self.vessel_code}")
 
 
-class SmartWatch(ElectronicDevice):
-    """Represent a smartwatch inherited from ElectronicDevice."""
+class CargoShip(Watercraft):
+    """Subclass representing a commercial container ship."""
 
-    def __init__(
-        self, brand: str, model_name: str, battery_hours: int
-    ) -> None:
-        super().__init__(brand, model_name)
-        self.battery_hours = battery_hours
+    def __init__(self, manufacturer: str, vessel_code: str, container_capacity: int) -> None:
+        super().__init__(manufacturer, vessel_code)
+        self.container_capacity: int = container_capacity
 
-    def display_details(self) -> None:
-        """Display smartwatch battery endurance."""
-        super().display_details()
-        print(f"Battery Life: {self.battery_hours} hours")
+    def print_specs(self) -> None:
+        """Display cargo ship specifications."""
+        super().print_specs()
+        print(f"Container Capacity: {self.container_capacity} TEU")
 
 
-# ============================================================
-# Challenge 5: Garden Bed Area Calculator
-# Concept: Base abstract shape pattern with polymorphic calculations
-# ============================================================
+class Speedboat(Watercraft):
+    """Subclass representing a motorized recreational boat."""
 
+    def __init__(self, manufacturer: str, vessel_code: str, horsepower: int) -> None:
+        super().__init__(manufacturer, vessel_code)
+        self.horsepower: int = horsepower
+
+    def print_specs(self) -> None:
+        """Display speedboat specifications."""
+        super().print_specs()
+        print(f"Engine Rating: {self.horsepower} HP")
+
+
+# ============================================================================
+# Challenge 5: Landscape Region Surface Calculation
+# Concept: Polymorphism, abstract base behavior via raise NotImplementedError
+# ============================================================================
 class LandPlot:
-    """Base class for agricultural and garden land plots."""
+    """Base class for calculating geographical land plots."""
 
-    def area(self) -> float:
-        """Calculate and return surface area."""
-        raise NotImplementedError("Subclasses must implement area().")
-
-
-class CircularPond(LandPlot):
-    """Calculate the area of a circular pond."""
-
-    def __init__(self, radius: float) -> None:
-        self.radius = radius
-
-    def area(self) -> float:
-        return math.pi * (self.radius ** 2)
+    def calculate_surface(self) -> float:
+        """Return the land plot's total area."""
+        raise NotImplementedError("Subclasses must implement calculate_surface().")
 
 
-class VegetableBed(LandPlot):
-    """Calculate the area of a rectangular vegetable patch."""
+class CircularPark(LandPlot):
+    """Calculate the circular acreage of a public park."""
 
-    def __init__(self, length: float, width: float) -> None:
-        self.length = length
-        self.width = width
+    def __init__(self, radius_meters: float) -> None:
+        self.radius_meters: float = radius_meters
 
-    def area(self) -> float:
-        return self.length * self.width
+    def calculate_surface(self) -> float:
+        """Return area using pi * r^2."""
+        return math.pi * (self.radius_meters**2)
 
 
-# ============================================================
-# Challenge 6: Food Delivery Order Tray
-# Concept: List of item tuples, price validation, and sum accumulation
-# ============================================================
+class AgriculturalField(LandPlot):
+    """Calculate the area of a rectangular field."""
 
-class FoodOrder:
-    """Manage food dishes and calculate the total restaurant bill."""
+    def __init__(self, length_meters: float, width_meters: float) -> None:
+        self.length_meters: float = length_meters
+        self.width_meters: float = width_meters
+
+    def calculate_surface(self) -> float:
+        """Return area using length * width."""
+        return self.length_meters * self.width_meters
+
+
+# ============================================================================
+# Challenge 6: Hardware Procurement Order (Aggregate Calculation)
+# Concept: Object state tracking, list of tuples, itemized display
+# ============================================================================
+class ProcurementOrder:
+    """Manage hardware assets and total cost in an order batch."""
 
     def __init__(self) -> None:
-        self.dishes: list[tuple[str, float]] = []
+        self.supplies: list[tuple[str, float]] = []
 
-    def add_dish(self, dish_name: str, price: float) -> None:
-        """Add a menu item to the meal tray."""
-        if price < 0:
-            print("Price cannot be negative.")
+    def log_supply(self, label: str, unit_price: float) -> None:
+        """Add an asset line item to the order."""
+        if unit_price < 0:
+            print("Unit cost cannot be negative.")
             return
 
-        self.dishes.append((dish_name, price))
-        print(f"Added to tray: {dish_name} - Rs. {price:.2f}")
+        self.supplies.append((label, unit_price))
+        print(f"Logged: {label} - Rs. {unit_price:.2f}")
 
-    def calculate_total(self) -> float:
-        """Calculate the total price of all dishes."""
-        return sum(price for _, price in self.dishes)
+    def compute_subtotal(self) -> float:
+        """Calculate total value of all ordered parts."""
+        return sum(cost for _, cost in self.supplies)
 
-    def display_order(self) -> None:
-        """Display the complete food receipt."""
-        print("\nOrder Summary:")
-        for name, price in self.dishes:
-            print(f"- {name}: Rs. {price:.2f}")
+    def print_manifest(self) -> None:
+        """Display an itemized manifest of all supplies."""
+        print("\nOrder Manifest:")
+        for label, cost in self.supplies:
+            print(f"{label}: Rs. {cost:.2f}")
+        print(f"Order Subtotal: Rs. {self.compute_subtotal():.2f}")
 
-        print(f"Grand Total: Rs. {self.calculate_total():.2f}")
 
+# ============================================================================
+# Challenge 7: Book Review Metric Engine
+# Concept: Bound-checked input, numeric rating collection, average metric
+# ============================================================================
+class BookReviewMetric:
+    """Store publication metadata and maintain reader review ratings."""
 
-# ============================================================
-# Challenge 7: Restaurant Customer Review Box
-# Concept: Numeric list validation (1 to 10) and average rating
-# ============================================================
+    def __init__(self, volume_title: str) -> None:
+        self.volume_title: str = volume_title
+        self.critique_scores: list[float] = []
 
-class Restaurant:
-    """Store dining ratings and calculate customer satisfaction."""
-
-    def __init__(self, name: str) -> None:
-        self.name = name
-        self.reviews: list[float] = []
-
-    def add_review(self, score: float) -> None:
-        """Submit a rating between 1 and 10."""
-        if not 1 <= score <= 10:
-            print("Rating must be between 1 and 10.")
+    def submit_rating(self, score: float) -> None:
+        """Accept a score strictly between 1.0 and 10.0."""
+        if not 1.0 <= score <= 10.0:
+            print("Score must be between 1.0 and 10.0.")
             return
 
-        self.reviews.append(score)
-        print(f"Review {score:.1f}/10 submitted for {self.name}.")
+        self.critique_scores.append(score)
+        print(f"Recorded review score {score:.1f} for '{self.volume_title}'.")
 
-    def average_score(self) -> float:
-        """Calculate average customer rating."""
-        if not self.reviews:
+    def mean_score(self) -> float:
+        """Compute the average review score."""
+        if not self.critique_scores:
             return 0.0
-        return sum(self.reviews) / len(self.reviews)
+        return sum(self.critique_scores) / len(self.critique_scores)
 
-    def display_details(self) -> None:
-        """Display restaurant feedback score."""
-        print(f"Restaurant: {self.name}")
-        print(f"Total Feedback Given: {len(self.reviews)}")
-        print(f"Average Rating: {self.average_score():.2f}/10")
+    def print_critique_card(self) -> None:
+        """Display publication score overview."""
+        print(f"Book Title: {self.volume_title}")
+        print(f"Total Critiques: {len(self.critique_scores)}")
+        print(f"Audience Rating: {self.mean_score():.2f}/10")
 
 
-# ============================================================
-# Challenge 8: Hotel Guest Booking Record
-# Concept: Record storage and formatted card/slip printing
-# ============================================================
-
-class HotelGuest:
-    """Store and display hotel guest reservation records."""
+# ============================================================================
+# Challenge 8: Hotel Reservation Profile
+# Concept: Multi-field entity record keeper, formatted card display
+# ============================================================================
+class HotelReservation:
+    """Manage and display guest booking records."""
 
     def __init__(
         self,
-        booking_id: int,
+        booking_ref: int,
         guest_name: str,
-        room_type: str,
-        nights: int,
+        room_category: str,
+        suite_number: int,
     ) -> None:
-        self.booking_id = booking_id
-        self.guest_name = guest_name
-        self.room_type = room_type
-        self.nights = nights
+        self.booking_ref: int = booking_ref
+        self.guest_name: str = guest_name
+        self.room_category: str = room_category
+        self.suite_number: int = suite_number
 
-    def display_booking(self) -> None:
-        """Display the reservation confirmation."""
-        print(f"Booking ID: {self.booking_id}")
-        print(f"Guest Name: {self.guest_name}")
-        print(f"Room Category: {self.room_type}")
-        print(f"Duration: {self.nights} night(s)")
+    def view_booking_card(self) -> None:
+        """Print full reservation particulars."""
+        print(f"Reference ID: #{self.booking_ref}")
+        print(f"Guest: {self.guest_name}")
+        print(f"Category: {self.room_category}")
+        print(f"Suite: {self.suite_number}")
 
 
-# ============================================================
-# Challenge 9: Driver Fitness / Fitness Test Evaluation
-# Concept: List filtering, threshold checking (min 35), and Pass/Fail logic
-# ============================================================
+# ============================================================================
+# Challenge 9: Flight Cadet Flight Test Evaluation
+# Concept: Batch score analysis, percentage generation, passing criteria gate
+# ============================================================================
+class CadetFlightTest:
+    """Evaluate pilot cadet drill scores and qualification status."""
 
-class DrivingFitnessTest:
-    """Calculate and display fitness clearance based on fitness checks."""
+    def __init__(self, cadet_alias: str, drill_marks: list[float]) -> None:
+        self.cadet_alias: str = cadet_alias
+        self.drill_marks: list[float] = drill_marks
 
-    def __init__(self, candidate_name: str, scores: list[float]) -> None:
-        self.candidate_name = candidate_name
-        self.scores = scores
+    def aggregate_points(self) -> float:
+        """Sum total points accumulated."""
+        return sum(self.drill_marks)
 
-    def calculate_total_score(self) -> float:
-        """Calculate total points across all checkpoints."""
-        return sum(self.scores)
-
-    def calculate_percentage(self) -> float:
-        """Calculate average points percentage."""
-        if not self.scores:
+    def completion_percentage(self) -> float:
+        """Compute overall qualification percentage assuming drills out of 100."""
+        if not self.drill_marks:
             return 0.0
-        return self.calculate_total_score() / len(self.scores)
+        return self.aggregate_points() / len(self.drill_marks)
 
-    def get_clearance_status(self) -> str:
-        """Return Pass if every module score is at least 35 points."""
-        if not self.scores:
-            return "No test scores available"
-        if all(score >= 35 for score in self.scores):
-            return "Pass"
-        return "Fail"
+    def assess_certification(self) -> str:
+        """Certify Pass if all drills score at least 35 points."""
+        if not self.drill_marks:
+            return "No drills recorded"
+        if all(mark >= 35.0 for mark in self.drill_marks):
+            return "Qualified (Pass)"
+        return "Disqualified (Fail)"
 
-    def display_report(self) -> None:
-        """Display the candidate's fitness evaluation."""
-        print(f"Candidate: {self.candidate_name}")
-        print(f"Total Score: {self.calculate_total_score():.0f}")
-        print(f"Performance: {self.calculate_percentage():.2f}%")
-        print(f"Status: {self.get_clearance_status()}")
+    def render_dossier(self) -> None:
+        """Print assessment scorecard."""
+        print(f"Cadet: {self.cadet_alias}")
+        print(f"Points Scored: {self.aggregate_points():.0f}")
+        print(f"Score Percentage: {self.completion_percentage():.2f}%")
+        print(f"Final Outcome: {self.assess_certification()}")
 
 
-# ============================================================
-# Challenge 10: Fitness Club Membership Roster
-# Concept: Roster management with duplicate checking and member display
-# ============================================================
+# ============================================================================
+# Challenge 10: Masterclass Workshop Directory
+# Concept: Member deduplication, roster management, string joining
+# ============================================================================
+class MasterclassWorkshop:
+    """Manage professional masterclass registrations."""
 
-class FitnessClub:
-    """Manage a gym facility and registered athletic members."""
+    def __init__(self, workshop_topic: str, lead_mentor: str) -> None:
+        self.workshop_topic: str = workshop_topic
+        self.lead_mentor: str = lead_mentor
+        self.attendees: list[str] = []
 
-    def __init__(self, club_name: str, head_trainer: str) -> None:
-        self.club_name = club_name
-        self.head_trainer = head_trainer
-        self.members: list[str] = []
-
-    def register_member(self, member_name: str) -> None:
-        """Register a new member if not already joined."""
-        if member_name in self.members:
-            print(f"{member_name} already holds an active membership.")
+    def register_attendee(self, attendee_name: str) -> None:
+        """Add attendee if not already on the roster."""
+        if attendee_name in self.attendees:
+            print(f"Attendee '{attendee_name}' is already on the roster.")
             return
 
-        self.members.append(member_name)
-        print(f"{member_name} registered successfully.")
+        self.attendees.append(attendee_name)
+        print(f"Attendee '{attendee_name}' confirmed.")
 
-    def display_club(self) -> None:
-        """Display gym details and all enrolled members."""
-        print(f"Gym: {self.club_name}")
-        print(f"Head Trainer: {self.head_trainer}")
-        print(f"Total Active Members: {len(self.members)}")
-        print(f"Member List: {', '.join(self.members)}")
+    def summarize_workshop(self) -> None:
+        """Print workshop roster status."""
+        print(f"Topic: {self.workshop_topic}")
+        print(f"Mentor: {self.lead_mentor}")
+        print(f"Total Confirmed: {len(self.attendees)}")
+        print(f"Roster: {', '.join(self.attendees)}")
 
 
-# ============================================================
-# Full Execution Runner (All 10 Challenges Tested)
-# ============================================================
-
+# ============================================================================
+# Demonstration Main
+# ============================================================================
 def main() -> None:
-    """Demonstrate all 10 unique OOP coding challenges."""
+    """Execute test runs for all 10 challenges."""
+    print("=== Challenge 1: Trainee Assessment ===")
+    trainee = Trainee("Vikram", [88.0, 92.5, 79.0])
+    trainee.print_summary()
 
-    print("=== Challenge 1: Cricket Player Stats ===")
-    batter = CricketPlayer("Rohit", [45.0, 88.0, 102.0])
-    batter.display_details()
+    print("\n=== Challenge 2: Digital Wallet ===")
+    wallet = DigitalWallet("vikram_pay", 1500.00)
+    wallet.top_up(600.00)
+    wallet.spend(350.00)
+    wallet.show_balance()
 
-    print("\n=== Challenge 2: Mobile Wallet ===")
-    wallet = MobileWallet("Sunita", 800.00)
-    wallet.add_funds(400.00)
-    wallet.spend(250.00)
-    wallet.display_balance()
+    print("\n=== Challenge 3: Consultant Retainer ===")
+    advisor = Consultant("Meera", 408, 45000.00)
+    advisor.display_contract()
 
-    print("\n=== Challenge 3: Freelance Consultant ===")
-    advisor = Consultant("Meera", 401, 45000.00)
-    advisor.display_details()
+    print("\n=== Challenge 4: Watercraft Inheritance ===")
+    cargo = CargoShip("Maersk Marine", "V-901", 18000)
+    cargo.print_specs()
 
-    print("\n=== Challenge 4: Electronic Gadget Hierarchy ===")
-    laptop = Laptop("Dell", "XPS 15", 16)
-    laptop.display_details()
+    print("\nSpeedboat Details:")
+    boat = Speedboat("Yamaha Marine", "SB-22", 300)
+    boat.print_specs()
 
-    print("\nSmartwatch Details:")
-    watch = SmartWatch("Noise", "ColorFit", 48)
-    watch.display_details()
+    print("\n=== Challenge 5: Land Plot Surface Area ===")
+    park = CircularPark(14.0)
+    farm = AgriculturalField(50.0, 30.0)
+    print(f"Circular Park Area: {park.calculate_surface():.2f} sq.m")
+    print(f"Agricultural Field Area: {farm.calculate_surface():.2f} sq.m")
 
-    print("\n=== Challenge 5: Garden Bed Area Calculator ===")
-    pond = CircularPond(4.0)
-    bed = VegetableBed(6.0, 3.0)
-    print(f"Circular Pond Area: {pond.area():.2f} sq meters")
-    print(f"Vegetable Bed Area: {bed.area():.2f} sq meters")
+    print("\n=== Challenge 6: Hardware Procurement Order ===")
+    procurement = ProcurementOrder()
+    procurement.log_supply("Solid State Drive", 4500.00)
+    procurement.log_supply("RAM Module 16GB", 3200.00)
+    procurement.log_supply("Cooling Fan Unit", 1100.00)
+    procurement.print_manifest()
 
-    print("\n=== Challenge 6: Food Delivery Order Tray ===")
-    order = FoodOrder()
-    order.add_dish("Paneer Tikka", 220.00)
-    order.add_dish("Butter Naan", 45.00)
-    order.add_dish("Mango Lassi", 80.00)
-    order.display_order()
+    print("\n=== Challenge 7: Book Review Metric ===")
+    review = BookReviewMetric("Designing Data-Intensive Applications")
+    review.submit_rating(9.5)
+    review.submit_rating(9.0)
+    review.submit_rating(10.0)
+    review.print_critique_card()
 
-    print("\n=== Challenge 7: Restaurant Review Box ===")
-    bistro = Restaurant("Spice Route")
-    bistro.add_review(9.0)
-    bistro.add_review(8.5)
-    bistro.add_review(9.5)
-    bistro.display_details()
+    print("\n=== Challenge 8: Hotel Reservation Profile ===")
+    guest = HotelReservation(7702, "Siddharth", "Executive Suite", 412)
+    guest.view_booking_card()
 
-    print("\n=== Challenge 8: Hotel Booking Record ===")
-    guest = HotelGuest(2042, "Arjun", "Deluxe Suite", 3)
-    guest.display_booking()
+    print("\n=== Challenge 9: Flight Cadet Evaluation (Cadet 1) ===")
+    cadet1 = CadetFlightTest("Echo-Leader", [75.0, 80.0, 85.0])
+    cadet1.render_dossier()
 
-    print("\n=== Challenge 9: Driver Fitness Test ===")
-    fit_candidate = DrivingFitnessTest("Sunil", [75, 80, 65, 85])
-    fit_candidate.display_report()
+    print("\n=== Challenge 9: Flight Cadet Evaluation (Cadet 2) ===")
+    cadet2 = CadetFlightTest("Bravo-Wing", [90.0, 28.0, 88.0, 70.0])
+    cadet2.render_dossier()
 
-    print("\nSecond Candidate Evaluation:")
-    unfit_candidate = DrivingFitnessTest("Kavita", [70, 30, 85, 90])  # One test < 35
-    unfit_candidate.display_report()
-
-    print("\n=== Challenge 10: Fitness Club Membership ===")
-    gym = FitnessClub("Iron Pulse Fitness", "Trainer Rajesh")
-    gym.register_member("Sunil")
-    gym.register_member("Meera")
-    gym.register_member("Sunil")  # Duplicate check
-    gym.register_member("Deepak")
-    gym.display_club()
+    print("\n=== Challenge 10: Masterclass Workshop Directory ===")
+    workshop = MasterclassWorkshop("Advanced Architecture & Microservices", "Dr. Rao")
+    workshop.register_attendee("Vikram")
+    workshop.register_attendee("Meera")
+    workshop.register_attendee("Siddharth")
+    workshop.summarize_workshop()
 
 
 if __name__ == "__main__":
